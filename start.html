@@ -1,0 +1,73 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
+<style>
+html,body {
+	margin:0;
+	padding:0;
+	}
+div.content {
+	text-align:center;
+
+}
+div.top {
+	top: 0;
+	height: 90px;
+	text-align:center;
+	width: 100%;
+	position: fixed;
+	background:gray;
+	color: white;
+	margin-left: 0;
+}
+div.push {margin-bottom: 110px}
+
+#inline {
+	display: inline-block;
+	}
+</style>
+</head>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
+<div class ='top'>
+		<h1 id = "inline" position = "absolute"> Pop Art </h1>
+
+	<div class="w3-container" position = "absolute" top = "60px" left = "30px"  >
+		<div class="w3-dropdown-hover">
+			<button class="w3-button w3-black">Other</button>
+			<div class="w3-dropdown-content w3-bar-block w3-border">
+				<a href="rookies" class="w3-bar-item w3-button">Rookies</a>
+				<a href="privacy_policy" class="w3-bar-item w3-button">Privacy Policy</a>
+			</div>
+		</div>
+	</div>
+	
+</div>
+<div class='push'>
+</div>
+<div class="content">
+<form action="/one" >
+<h4>Artist Name: </h4>
+<select style="text-align:center;" name="artist">
+	<option value =""</option>
+    {% for x in artists %}
+    <option value="{{x}}">{{x}}</option>
+    {% endfor %}
+    
+</select> <br>
+
+<input type="text" name="artist" > <br> for space in artist name use + <br>
+
+<br><br>
+<h4> Time Frame: </h4>
+Start: <input type="text" name="start_date" value="2017-07-09"><br>
+End: <input type="text" name="end_date" value="{{end_date}}"><br> <br>
+
+
+<input type="submit" value="Submit">
+</form>
+</div>
+</body>
+</html>
+
