@@ -1,1 +1,1 @@
-cron job to run Daily_Web_Scraper and Billboard_Weekly
+cron job to run DailyWebScraper and billboard_weekly
