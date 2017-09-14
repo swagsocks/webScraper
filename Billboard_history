@@ -1,0 +1,57 @@
+import datetime
+import billboard
+import psycopg2
+import re
+from psycopg2.extensions import AsIs
+
+base = datetime.date.today()
+date_list = [str(base - datetime.timedelta(days=x)) for x in range(751, 2941, 7)]
+
+for dates in date_list:
+	chart = billboard.ChartData('hot-100', date=dates)
+	for art in chart:
+		art.artist = re.split(' & | + | x | Feat | feat | Featuring |, ', art.artist)
+		for x in art.artist:
+			x = x.lower().replace(' ', '_').replace('-', '_').replace('.', '').replace('"', '')
+			print x
+			try:
+				x = str(x)
+			except UnicodeEncodeError:
+				x = 'amine'
+			conn = psycopg2.connect(database = '####', user = '####', password = '####', host = '####', port = '####')
+			cur = conn.cursor()
+			cur.execute('''CREATE TABLE IF NOT EXISTS "%s"
+				(Date    DATE			PRIMARY KEY,   
+				Spotify_Popularity      BIGSERIAL,    
+				Spotify_Followers       BIGSERIAL,    
+				YouTube_Views           BIGSERIAL,
+				YouTube_Subscribers     BIGSERIAL,
+				Facebook_Talking_About  BIGSERIAL,
+				Facebook_Fan_Count      BIGSERIAL,
+				Twitter_Followers		BIGSERIAL,
+				Soundcloud_Followers	BIGSERIAL,
+				Facebook_Post_Shares	BIGSERIAL,
+				Facebook_Post_Likes		BIGSERIAL,
+				Facebook_Post_Comments	BIGSERIAL,
+				Twitter_Retweets		BIGSERIAL,
+				Twitter_Favorites		BIGSERIAL	
+			);'''  %x)	
+			conn.commit()
+			conn.close()
+
+			conn = psycopg2.connect(database = '####', user = '####', password = '####', host = '####', port = '####')
+			cur = conn.cursor()
+			bill_board = {'Date': dates, 'Song':art.title, 'Rank':art.rank, 'Weeks':art.weeks}
+			columns = bill_board.keys()
+			values = [bill_board[column] for column in columns]
+			cur.execute('''CREATE TABLE IF NOT EXISTS "%s"
+				(Date    				Date,   
+				Song					text,
+				Rank					smallint,
+				Weeks					smallint
+			);'''  %x)	
+			insert_statement = 'insert into' + '"%s"' %x + '(%s) values %s'
+			cur.execute(insert_statement, (AsIs(','.join(columns)), tuple(values)))
+		
+			conn.commit()
+			conn.close()
