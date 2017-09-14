@@ -1,0 +1,206 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+	<style>
+		html,body {
+			margin:0;
+			padding:0;
+			}
+		div.graph {
+			text-align:center;
+			width: 90%;
+			display: block;
+			margin: 0 auto;
+		}
+		div.top {
+			top: 0;
+			height: 120px;
+			text-align:center;
+			width: 100%;
+			position: fixed;
+			background:gray;
+			color: white;
+			margin-left: 0;
+		}
+		div.push {margin-bottom: 140px}
+
+		div.table {
+			text-align:center;
+		}
+		table, th, td {
+			border: 1px solid black; 
+			border-collapse: collapse;
+		}
+	</style>
+	<meta charset="utf-8" />
+	<script src='static/Chart.min.js'></script>
+</head>
+<body>
+<div class = 'top'>
+	<h1>{{artist}}</h1>
+	<a href="/">home page</a>
+</div>
+<div class = 'push'>
+</div>
+<br/>
+<div class = 'table'>
+	<img src={{picture}} alt ={{artist}} style="width:300px;height:300px;">
+<br/>
+<br/>
+	<center>
+		<h3> Billboard Hot 100</b3>
+	<br/>
+		{{html3|safe}}
+	</center>
+<br/>
+<details>
+	<center>
+		{{html2|safe}}
+	</center>
+</details>
+</div>
+<br>
+
+<div class = 'graph'>
+	{% for x in objs %}
+	<details open>
+		<summary>
+		<label for = "chart{{objs.index(x)}}">
+
+		<p style="font-size:18px">{{colnames[objs.index(x)]}}</p>
+		</summary>
+		<br />
+		</label>
+		<div style = 'text-align':center;>
+			<canvas id="chart{{objs.index(x)}}" width="600" height="350"></canvas>	
+			<br>
+			<p> change = {{x.percent_change}} % </p>
+		</div>
+
+	
+	</details>
+	{% endfor %}
+	
+		{% for y in objs2 %}
+	<details open>
+		<summary>
+		<label for = "chart2{{objs2.index(y)}}">
+
+		<p style="font-size:18px">{{colnames2[objs2.index(y)]}}</p>
+		</summary>
+		<br />
+		</label>
+		<div style = 'text-align':center;>
+			<canvas id="chart2{{objs2.index(y)}}" width="600" height="350"></canvas>	
+			<br>
+			<p> change = {{y.percent_change}} % </p>
+		</div>
+
+	
+	</details>
+	{% endfor %}
+	
+</div>
+<br>
+ 
+<script>
+
+	Chart.defaults.global.animationSteps = 50;
+    Chart.defaults.global.tooltipYPadding = 16;
+    Chart.defaults.global.tooltipCornerRadius = 0;
+    Chart.defaults.global.tooltipTitleFontStyle = "normal";
+    Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+    Chart.defaults.global.animationEasing = "easeOutBounce";
+    Chart.defaults.global.responsive = true;
+    Chart.defaults.global.scaleLineColor = "black";
+    Chart.defaults.global.scaleFontSize = 16;
+    Chart.defaults.global.maintainAspectRatio = false;
+    
+{% for x in objs %}
+   // bar chart data
+   var barData = {
+   labels : [{% for item in labels %}
+                  "{{item}}",
+              {% endfor %}],
+   datasets : [
+      {
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            bezierCurve: false,
+            data: {{x.data}}
+      }]
+   }
+ 
+   // get bar chart canvas
+   var mychart = document.getElementById("chart" + {{objs.index(x)}}).getContext("2d");
+ 
+   steps = 10
+   max = {{x.graph_max}}
+   min = {{x.graph_min}}
+   // draw bar chart
+   var LineChartDemo = new Chart(mychart).Line(barData, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: (max-min)/steps,
+        scaleStartValue: min,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: false,
+        bezierCurve: false,
+ 
+   });
+ 
+{% endfor %} 
+
+{% for y in objs2 %}
+   // bar chart data
+   var barData = {
+   labels : [{% for item2 in labels %}
+                  "{{item2}}",
+              {% endfor %}],
+   datasets : [
+      {
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            bezierCurve: false,
+            data: {{y.data}}
+      }]
+   }
+ 
+   // get bar chart canvas
+   var mychart2 = document.getElementById("chart2" + {{objs2.index(y)}}).getContext("2d");
+ 
+   steps = 10
+   max2 = {{y.graph_max2}}
+   min2 = {{y.graph_min2}}
+   // draw bar chart
+   var LineChartDemo = new Chart(mychart2).Line(barData, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: (max2-min2)/steps,
+        scaleStartValue: min2,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: false,
+        bezierCurve: false,
+ 
+   });
+ 
+{% endfor %} 
+
+ 
+</script>
+<br>
+<br>
+<div class = 'table'>
+	<a href="/">home page</a>
