@@ -6,6 +6,47 @@
 			margin:0;
 			padding:0;
 			}
+			
+		.drop-button {
+			background-color: #000000;
+			color: white;
+			padding: 16px;
+			font-size: 16px;
+			border: none;
+			cursor: pointer;
+			}
+	
+		.dropdown {
+			position: relative;
+			display: inline-block;
+			}
+
+		.dropdown-content {
+			display: none;
+			position: absolute;
+			background-color: #f9f9f9;
+			min-width: 160px;
+			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			z-index: 1;
+			}
+
+		.dropdown-content a {
+			color: black;
+			padding: 12px 16px;
+			text-decoration: none;
+			display: block;
+			}
+	
+		.dropdown-content a:hover {background-color: #f1f1f1}
+
+		.dropdown:hover .dropdown-content {
+			display: block;
+			}
+	
+		div.content {
+			text-align:center;
+
+		}
 		div.graph {
 			text-align:center;
 			width: 90%;
@@ -14,7 +55,7 @@
 		}
 		div.top {
 			top: 0;
-			height: 120px;
+			height: 90px;
 			text-align:center;
 			width: 100%;
 			position: fixed;
@@ -31,14 +72,25 @@
 			border: 1px solid black; 
 			border-collapse: collapse;
 		}
+		
+		#inline {
+			display: inline-block;
+			}
 	</style>
 	<meta charset="utf-8" />
 	<script src='static/Chart.min.js'></script>
 </head>
 <body>
 <div class = 'top'>
-	<h1>{{artist}}</h1>
-	<a href="/">home page</a>
+	<h1 id = "inline" style = "margin-right: 120px">{{artist}}</h1>
+	<div class="dropdown" style = "float:left">
+		<button class="drop-button" style = "margin: 20px"> <(o_o)> </button>
+		<div class="dropdown-content">
+			<a href="rookies" >Rookies</a>
+			<a href="privacy_policy">Privacy Policy</a>
+			<a href="/">Home Page</a>
+		</div>
+	</div>
 </div>
 <div class = 'push'>
 </div>
@@ -204,3 +256,8 @@
 <br>
 <div class = 'table'>
 	<a href="/">home page</a>
+<br>
+<br>
+</div>
+</body>
+</html>
