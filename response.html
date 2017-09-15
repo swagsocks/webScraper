@@ -10,8 +10,8 @@
 		.drop-button {
 			background-color: #000000;
 			color: white;
-			padding: 16px;
-			font-size: 16px;
+			padding: 20%;
+			font-size: 20%;
 			border: none;
 			cursor: pointer;
 			}
@@ -25,7 +25,7 @@
 			display: none;
 			position: absolute;
 			background-color: #f9f9f9;
-			min-width: 160px;
+			min-width: 10%;
 			box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 			z-index: 1;
 			}
@@ -42,7 +42,6 @@
 		.dropdown:hover .dropdown-content {
 			display: block;
 			}
-	
 		div.content {
 			text-align:center;
 
@@ -72,17 +71,13 @@
 			border: 1px solid black; 
 			border-collapse: collapse;
 		}
-		
-		#inline {
-			display: inline-block;
-			}
+
 	</style>
 	<meta charset="utf-8" />
 	<script src='static/Chart.min.js'></script>
 </head>
 <body>
 <div class = 'top'>
-	<h1 id = "inline" style = "margin-right: 120px">{{artist}}</h1>
 	<div class="dropdown" style = "float:left">
 		<button class="drop-button" style = "margin: 20px"> <(o_o)> </button>
 		<div class="dropdown-content">
@@ -90,6 +85,12 @@
 			<a href="privacy_policy">Privacy Policy</a>
 			<a href="/">Home Page</a>
 		</div>
+	</div>
+	<div class = "dropdown" style = "float:right">
+		<h1 style = "margin: 20px"></h1>
+	</div>
+	<div  style = "margin: 0 auto; width: 50%;"> 
+		<h1> {{artist}} </h1>
 	</div>
 </div>
 <div class = 'push'>
