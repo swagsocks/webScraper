@@ -82,6 +82,7 @@
 		<button class="drop-button" style = "margin: 20px"> <(o_o)> </button>
 		<div class="dropdown-content">
 			<a href="rookies" >Rookies</a>
+			<a href="top_ten">Top Ten</a>
 			<a href="privacy_policy">Privacy Policy</a>
 			<a href="/">Home Page</a>
 		</div>
@@ -158,7 +159,7 @@
  
 <script>
 
-	Chart.defaults.global.animationSteps = 50;
+    Chart.defaults.global.animationSteps = 50;
     Chart.defaults.global.tooltipYPadding = 16;
     Chart.defaults.global.tooltipCornerRadius = 0;
     Chart.defaults.global.tooltipTitleFontStyle = "normal";
@@ -195,17 +196,29 @@
    max = {{x.graph_max}}
    min = {{x.graph_min}}
    // draw bar chart
-   var LineChartDemo = new Chart(mychart).Line(barData, {
-        scaleOverride: true,
-        scaleSteps: steps,
-        scaleStepWidth: (max-min)/steps,
-        scaleStartValue: min,
-        scaleShowVerticalLines: true,
-        scaleShowGridLines : true,
-        barShowStroke : true,
-        scaleShowLabels: false,
-        bezierCurve: false,
- 
+   var LineChartDemo = new Chart(mychart, {
+   		type: 'line',
+   		data: barData, 
+   		options: {
+			scaleOverride: true,
+			scaleSteps: steps,
+			scaleStepWidth: (max-min)/steps,
+			scaleStartValue: min,
+			scaleShowVerticalLines: true,
+			scaleShowGridLines : true,
+			barShowStroke : true,
+			scaleShowLabels: true,
+			bezierCurve: false,
+			scales: {
+				xAxes: [{
+					ticks: {
+						display: false
+					}
+				}]
+			}
+		}
+        
+
    });
  
 {% endfor %} 
@@ -236,18 +249,30 @@
    max2 = {{y.graph_max2}}
    min2 = {{y.graph_min2}}
    // draw bar chart
-   var LineChartDemo = new Chart(mychart2).Line(barData, {
-        scaleOverride: true,
-        scaleSteps: steps,
-        scaleStepWidth: (max2-min2)/steps,
-        scaleStartValue: min2,
-        scaleShowVerticalLines: true,
-        scaleShowGridLines : true,
-        barShowStroke : true,
-        scaleShowLabels: false,
-        bezierCurve: false,
- 
-   });
+   var LineChartDemo = new Chart(mychart2, {
+   		type: 'line',
+   		data: barData, 
+   		options: {
+			scaleOverride: true,
+			scaleSteps: steps,
+			scaleStepWidth: (max2-min2)/steps,
+			scaleStartValue: min2,
+			scaleShowVerticalLines: true,
+			scaleShowGridLines : true,
+			barShowStroke : true,
+			scaleShowLabels: true,
+			bezierCurve: false,
+			scales: {
+				xAxes: [{
+					ticks: {
+						display: false
+					}
+				}]
+			}
+		}
+
+   });		
+
  
 {% endfor %} 
 
