@@ -1,0 +1,89 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<head>
+<style>
+html,body {
+	margin:0;
+	padding:0;
+	}
+
+.drop-button {
+	background-color: #000000;
+	color: white;
+	padding: 20%;
+	font-size: 20%;
+	border: none;
+	cursor: pointer;
+	}
+	
+.dropdown {
+	position: relative;
+	display: inline-block;
+	}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 10%;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	}
+
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+	}
+	
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+	}
+	
+div.content {
+	text-align:center;
+
+}
+div.top {
+	top: 0;
+	height: 90px;
+	text-align:center;
+	width: 100%;
+	position: fixed;
+	background:gray;
+	color: white;
+	margin-left: 0;
+}
+div.push {margin-bottom: 110px}
+
+</style>
+</head>
+<body>
+<div class ='top'>
+	<div class="dropdown" style = "float:left">
+		<button class="drop-button" style = "margin: 20px"> <(o_o)> </button>
+		<div class="dropdown-content">
+			<a href="rookies" >Rookies</a>
+			<a href="top_ten">Top Ten</a>
+			<a href="privacy_policy">Privacy Policy</a>
+			<a href="/">Home</a>
+		</div>
+	</div>
+	<div class = "dropdown" style = "float:right">
+		<h1 style = "margin: 20px"></h1>
+	</div>
+	<div  style = "margin: 0 auto; width: 50%;"> 
+		<h1> Top Ten </h1>
+	</div>
+</div>
+<div class='push'>
+</div>
+<div class="content">
+{{top_ten|safe}}
+</div>
+</body>
+</html>
