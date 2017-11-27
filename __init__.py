@@ -1,11 +1,12 @@
 
+
 from cgi import parse_qs, escape
 import psycopg2
 import numpy as np
 import pandas as pd
 from wsgiref.simple_server import make_server
 import fnmatch
-import datetime
+from datetime import date, timedelta
 import requests, base64
 import json
 from flask import Flask
@@ -13,13 +14,14 @@ from flask import render_template
 from flask import request
 from flask import Markup
 import pickle
+import operator
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def start():
-	conn = psycopg2.connect(database = '####', user = '####', password = '####', host = '####', port = '####')
+	conn = psycopg2.connect(database = 'ArtistDB', user = 'swagsocks', password = 'Thatphrase22', host = 'artistdb.cfwy21axi65h.us-east-1.rds.amazonaws.com', port = '5432')
 	cur = conn.cursor()
 	cur.execute("select relname from pg_class where relkind='r' and relname !~ '^(pg_|sql_)';")
 	artists1 = cur.fetchall()
@@ -27,7 +29,7 @@ def start():
 	for i in artists1:
 		artists.append(i[0].replace('_', '+'))
 	artists.sort()
-	now = datetime.date.today()	
+	now = date.today()	
 	return render_template('start.html', end_date = now, artists = artists)
 
 
@@ -41,9 +43,7 @@ def not_found():
 
 @app.route("/one")
 def one():
-
-
-	conn = psycopg2.connect(database = '####', user = '####', password = '####', host = '####', port = '####')
+	conn = psycopg2.connect(database = 'ArtistDB', user = 'swagsocks', password = 'Thatphrase22', host = 'artistdb.cfwy21axi65h.us-east-1.rds.amazonaws.com', port = '5432')
 	cur = conn.cursor()
 	call_dictionary = parse_qs(request.query_string)
 	artist = str(call_dictionary['artist'][0])
@@ -61,10 +61,10 @@ def one():
 	
 	if artist2 not in artistlist2:
 	
-		usrPass = "####"
+		usrPass = "a7670b30dac04cb982b548123f466995:a9e01e681cd345469ddc7502972f6ed3"
 		b64Val = base64.b64encode(usrPass)
 
-		cred2 = {'grant_type':'refresh_token', 'refresh_token':'####', 'redirect_uri':'####'}
+		cred2 = {'grant_type':'refresh_token', 'refresh_token':'AQA_O9sBbrU_-iJwHOamTbWsMZAgUp1_WD0Wx9dQAXRuQOdASd9pKCdkmi03ija1dSFFR9ox_53JQzB-Tar_djKyVzEF8fjPBNrdgD9c6UPrJS7R7N9wSVN99QOTJq-P62A', 'redirect_uri':'http://the925.io'}
 		r2=requests.post('https://accounts.spotify.com/api/token', 
 						headers={"Authorization": "Basic %s" % b64Val}, 
 						data = cred2)
@@ -74,7 +74,7 @@ def one():
 		auth = {"Authorization": "Bearer %s" % token}
 
 		spotURL= 'https://api.spotify.com/v1/search?q='+ artist +'&type=artist'
-		conn = psycopg2.connect(database = '####', user = '####', password = '####', host = '####', port = '####')
+		conn = psycopg2.connect(database = 'ArtistDB', user = 'swagsocks', password = 'Thatphrase22', host = 'artistdb.cfwy21axi65h.us-east-1.rds.amazonaws.com', port = '5432')
 		cur = conn.cursor()
 		try:
 			data = requests.get(spotURL, headers = auth)
@@ -110,9 +110,9 @@ def one():
 		conn.close()	
 		
 	else:
-		usrPass = "####"
+		usrPass = "a7670b30dac04cb982b548123f466995:a9e01e681cd345469ddc7502972f6ed3"
 		b64Val = base64.b64encode(usrPass)
-		cred2 = {'grant_type':'refresh_token', 'refresh_token':'####', 'redirect_uri':'####'}
+		cred2 = {'grant_type':'refresh_token', 'refresh_token':'AQA_O9sBbrU_-iJwHOamTbWsMZAgUp1_WD0Wx9dQAXRuQOdASd9pKCdkmi03ija1dSFFR9ox_53JQzB-Tar_djKyVzEF8fjPBNrdgD9c6UPrJS7R7N9wSVN99QOTJq-P62A', 'redirect_uri':'http://the925.io'}
 		r2=requests.post('https://accounts.spotify.com/api/token', 
 					headers={"Authorization": "Basic %s" % b64Val}, 
 					data = cred2)
@@ -153,7 +153,7 @@ def one():
 		statement3 = statement2.format(artist = artist2)
 		
 		
-		conn = psycopg2.connect(database = '####', user = '####', password = '####', host = '####', port = '####')
+		conn = psycopg2.connect(database = 'ArtistDB', user = 'swagsocks', password = 'Thatphrase22', host = 'artistdb.cfwy21axi65h.us-east-1.rds.amazonaws.com', port = '5432')
 		cur = conn.cursor()
 		
 		cur.execute(statement3)
@@ -215,7 +215,7 @@ def one():
 		objs2 = [Stat(i) for i in aslists2]
 		html2 = df.to_html()
 		
-		conn = psycopg2.connect(database = '####', user = '####', password = '####', host = '####', port = '####')
+		conn = psycopg2.connect(database = 'billboarddb', user = 'swagsocks', password = 'Thatphrase22', host = 'artistdb.cfwy21axi65h.us-east-1.rds.amazonaws.com', port = '5432')
 		cur = conn.cursor()
 		billboard_test = '''select relname from pg_class where relname ='{artist}';'''
 		billboard_test2 = billboard_test.format(artist = artist2)
@@ -248,9 +248,9 @@ def rookies():
 
 	for artist in rookie_artists:
 		artist = artist.replace('_', '+')
-		usrPass = "####"
+		usrPass = "a7670b30dac04cb982b548123f466995:a9e01e681cd345469ddc7502972f6ed3"
 		b64Val = base64.b64encode(usrPass)
-		cred2 = {'grant_type':'refresh_token', 'refresh_token':'####', 'redirect_uri':'####'}
+		cred2 = {'grant_type':'refresh_token', 'refresh_token':'AQA_O9sBbrU_-iJwHOamTbWsMZAgUp1_WD0Wx9dQAXRuQOdASd9pKCdkmi03ija1dSFFR9ox_53JQzB-Tar_djKyVzEF8fjPBNrdgD9c6UPrJS7R7N9wSVN99QOTJq-P62A', 'redirect_uri':'http://the925.io'}
 		r2=requests.post('https://accounts.spotify.com/api/token', 
 					headers={"Authorization": "Basic %s" % b64Val}, 
 					data = cred2)
@@ -276,12 +276,58 @@ def rookies():
 def privacy():
 	return render_template('privacy_policy.css')
 
-ADMINS = ['####']
+ADMINS = ['minusme5@yahoo.com']
 if not app.debug:
     import logging
     from logging.handlers import SMTPHandler
-    mail_handler = SMTPHandler('####',
-                               '####',
+    mail_handler = SMTPHandler('http://34.195.159.78/',
+                               'server-error@the925.io',
                                ADMINS, 'YourApplication Failed')
     mail_handler.setLevel(logging.ERROR)
     app.logger.addHandler(mail_handler)
+ 
+ 
+ 
+@app.route('/top_ten')
+def top_ten():
+	stats = ['spotify_followers', 'spotify_popularity', 'facebook_fan_count', 'facebook_talking_about', 'youtube_views', 'youtube_subscribers', 'twitter_followers', 'soundcloud_followers', 'facebook_post_shares', 'facebook_post_likes', 'facebook_post_comments', 'twitter_retweets', 'twitter_favorites']
+	yesterday = date.today()- timedelta(1)
+	return render_template('top_ten.html', stats = stats, end_date = yesterday)
+
+@app.route('/top_ten_results')
+def top_ten_results():
+	conn = psycopg2.connect(database = 'ArtistDB', user = 'swagsocks', password = 'Thatphrase22', host = 'artistdb.cfwy21axi65h.us-east-1.rds.amazonaws.com', port = '5432')
+	cur = conn.cursor()
+	cur.execute("select relname from pg_class where relkind='r' and relname !~ '^(pg_|sql_)';")
+	artists= cur.fetchall()
+	call_dictionary = parse_qs(request.query_string)
+	start_date = call_dictionary.get('start_date')[0]
+	end_date = call_dictionary.get('end_date')[0]
+	stat = call_dictionary.get('stat')[0]
+	growth_dict = {}
+	for x in artists:
+		statement1 ='select {stat} from "{artist}" where Date = \'{start_date}\'::date'
+		statement_11 = statement1.format(stat =stat, artist = str(x[0]), start_date = start_date)
+		statement2 ='select {stat} from "{artist}" where Date = \'{end_date}\'::date'
+		statement_22 = statement2.format(stat =stat, artist = str(x[0]), end_date = end_date)
+		cur.execute(statement_11)
+		start_data = cur.fetchall()
+		cur.execute(statement_22)
+		end_data = cur.fetchall()
+		if start_data and end_data:
+			if start_data[0][0] != 0:
+				growth = (end_data[0][0] - start_data[0][0])/float(start_data[0][0])
+				growth_dict[x[0]] = growth
+	ordered_growth = sorted(growth_dict.items(), key=operator.itemgetter(1), reverse = True)
+	top_ten = ordered_growth[:10]
+	top_artists = []
+	growth_factor = []
+	for x in top_ten:
+		top_artists.append(x[0])
+		growth_factor.append(str(float("{0:.2f}".format(x[1]*100))) + '%')
+	top_dict = {}
+	top_dict['Artist'] = top_artists
+	top_dict['Growth'] = growth_factor
+	top_ten_table= pd.DataFrame(top_dict)
+	top_ten_html = top_ten_table.to_html()
+	return render_template('top_ten_results.html', stat = stat, top_ten = top_ten_html)
